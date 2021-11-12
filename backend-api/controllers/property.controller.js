@@ -18,40 +18,42 @@ async function handleAddProperty(request, response){
     }
 };
 
-async function handleUpdateProperty(request, response) {
-    try{
-        //Add code here:
+// async function handleUpdateProperty(request, response) {
+//     try{
+//         //Add code here:
 
 
 
         
-        return;
-    } catch (error){
-        console.log(error);
-        throw error;
-    }
-};
+//         return;
+//     } catch (error){
+//         console.log(error);
+//         throw error;
+//     }
+// };
 
-async function handleDeleteProperty(request, response) {
-    try{
-        //Add code here:
+// async function handleDeleteProperty(request, response) {
+//     try{
+//         //Add code here:
 
 
 
         
-        return;
-    } catch (error){
-        console.log(error);
-        throw error;
-    }
-};
+//         return;
+//     } catch (error){
+//         console.log(error);
+//         throw error;
+//     }
+// };
 
-async function findSelectedProperty(request, response) {
+async function latest6Properties(request, response) {
     try{
         //Add code here:
 
-
-
+        /* Example:,
+        const result = await service.addProperty(request.body.id, request.body.valuation, request.body.location, request.body.bedrooms, request.body.squareFeet, request.body.saleOrRent));
+        return response.json(result);
+        */
 
         return;
     } catch (error){
@@ -60,12 +62,14 @@ async function findSelectedProperty(request, response) {
     }
 };
 
-async function getAllProperties(request, response) {
+async function searchProperties(request, response) {
     try{
         //Add code here:
 
-
-
+        /* Example:,
+        const result = await service.addProperty(request.body.id, request.body.valuation, request.body.location, request.body.bedrooms, request.body.squareFeet, request.body.saleOrRent));
+        return response.json(result);
+        */
 
         return;
     } catch (error){
@@ -73,6 +77,34 @@ async function getAllProperties(request, response) {
         throw error;
     }
 };
+
+// async function findSelectedProperty(request, response) {
+//     try{
+//         //Add code here:
+
+
+
+
+//         return;
+//     } catch (error){
+//         console.log(error);
+//         throw error;
+//     }
+// };
+
+// async function getAllProperties(request, response) {
+//     try{
+//         //Add code here:
+
+
+
+
+//         return;
+//     } catch (error){
+//         console.log(error);
+//         throw error;
+//     }
+// };
 
 
 
@@ -80,6 +112,8 @@ module.exports = {
     handleAddProperty,
     handleUpdateProperty,
     handleDeleteProperty,
+    latest6Properties,
+    searchProperties,
     findSelectedProperty,
     getAllProperties,    
 }

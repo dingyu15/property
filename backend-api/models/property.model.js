@@ -17,6 +17,7 @@ module.exports = function(connection) {
           type: __________,
           allowNull: false,
           field: "__________",
+          createdAt: "________",
         }
         */
       },
