@@ -1,16 +1,18 @@
+const {Sequelize} = require("sequelize");
+// const sequelize = new Sequelize(process.env.DATABASE_URL, {
+//     dialectOptions: {
+//       ssl: {
+//         require: true,
+//         rejectUnauthorized: false
+//       }
+//     }
+//   }
+// );
+const sequelize = new Sequelize('sqlite:memory:');
 const Customer = require('./customer.model')(sequelize);
 const Agent = require('./agent.model')(sequelize);
 const Property = require('./property.model')(sequelize);
-const {Sequelize} = require("sequelize");
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false
-      }
-    }
-  }
-);
+
 
 (async() => {
     try{
