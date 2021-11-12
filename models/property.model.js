@@ -6,20 +6,19 @@ module.exports = function(connection) {
   Property.init(
       {
         //Add data columns & properties
-        /* 
+        
         id: {
           type: DataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true,
         },
 
-        data_column_name:{
-          type: __________,
+        price:{
+          type: DataTypes.INTEGER,
           allowNull: false,
-          field: "__________",
-          createdAt: "________",
+          field: "price",
         }
-        */
+        
       },
       {
         sequelize: connection,
