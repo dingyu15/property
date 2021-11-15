@@ -41,7 +41,11 @@ Agent.belongsTo(Property, {
 async function addData(){
   try{
     await Property.create({
-      price: 500000
+      price: 500000,
+      location: 'Sembawang',
+      noOfBedrooms: 4,
+      sizeInSqFt: 700,
+      isSale: true,
     });
   } catch(error){
     console.log(error);

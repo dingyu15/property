@@ -2,12 +2,11 @@ const service = require("../services/property.service");
 
 async function handleAddProperty(request, response){
     try{
-        if(typeof propertyId !== "number" || typeof valuation !== "number" || typeof bedrooms !== "number" || typeof sqFt !== "number") {
+        if(typeof request.body.price !== "number" || typeof request.body.noOfBedrooms !== "number" || typeof request.body.sizeInSqFt !== "number") {
             response.status(400);
             return response.json({message:"Incorrect request data"});
         };
-        const {price, location, bedrooms, sqFt, isSale, isRent} = request.body;
-        const result = await service.addProperty(price, location, bedrooms, sqFt, isSale, isRent);
+        const result = await service.addProperty(request.body.price, request.body.location, request.body.noOfBedrooms, request.body.sizeInSqFt, request.body.isSale, request.body.isRent);
         return response.json(result);
     } catch (error){
         console.log(error);

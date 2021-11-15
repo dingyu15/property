@@ -1,6 +1,6 @@
 const {Property, Agent, Customer} = require("../models/index.js");
 
-async function addProperty(price, location, bedrooms, sqFt, isSale, isRent){
+async function addProperty(price, location, bedrooms, size, isSale, isRent){
     try{
         const response = {
             status: null,
@@ -9,12 +9,12 @@ async function addProperty(price, location, bedrooms, sqFt, isSale, isRent){
         }
         
         //Fetch the properties (both rent and sale) currently on the market:
-        const property = await Property.findOne({where: {price, location, noOfBedrooms: bedrooms, sizeInSqFt: sqFt}});
+        const property = await Property.findOne({where: {price, location, noOfBedrooms: bedrooms, sizeInSqFt: size}});
         
         //Validation
         if (property) {
             response.status = 400;
-            response.message = `Property ${property.id} already exists. \n Update property instead.`;
+            response.message = `Property ${property.id} already exists. Update property instead.`;
             return response;
         };
 
@@ -23,7 +23,7 @@ async function addProperty(price, location, bedrooms, sqFt, isSale, isRent){
             price,
             location,
             noOfBedrooms: bedrooms,
-            sizeInSqFt: sqFt,
+            sizeInSqFt: size,
             isSale,
             isRent
         });
