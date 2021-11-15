@@ -6,19 +6,47 @@ module.exports = function(connection) {
   Property.init(
       {
         //Add data columns & properties
-        
         id: {
           type: DataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true,
         },
-
-        price:{
+        price: {
           type: DataTypes.INTEGER,
           allowNull: false,
           field: "price",
-        }
-        
+        },
+        location: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          field: "location",
+        },
+        noOfBedrooms:{
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          field: "bedrooms",
+        },
+        sizeInSqFt:{
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          field: "size"
+        },
+        isSale:{
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+          },
+        isRent:{
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+          },
+        createdAt: {
+          type: DataTypes.DATE,
+          field: "created_at",
+        },
+        updatedAt: {
+          type: DataTypes.DATE,
+          field: "updated_at",
+        },
       },
       {
         sequelize: connection,
