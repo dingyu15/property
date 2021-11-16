@@ -80,6 +80,7 @@ async function addData(){
       sizeInSqFt: 15000,
       isSale: true,
     });
+
     await Property.create({
       price: 8000,
       location: 'Europe',

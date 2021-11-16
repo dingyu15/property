@@ -1,3 +1,4 @@
+const e = require("express");
 const {Property, Agent, Customer} = require("../models/index.js");
 
 async function associate(propertyId, agentId) {
@@ -203,17 +204,34 @@ async function getLatestProperties(createdAtDate){
     }
 }
 
-async function searchProperties(searchParameter){
+async function searchProperties(price){
     try{
         const response = {
             status: null,
             message: null,
             data: null
         }
-       
-        //Add business logic here:
 
-
+        const propertyData = [];
+        const property = await Property.findAll();
+  
+        for (let i = 0; i < property.length; i++) {
+            if (property[i].price === price) { 
+                propertyData.push(property[i])
+                response.data = propertyData; 
+            }
+        }
+        
+        if(response.data === null) {
+            response.status = 404;
+            response.message = `Property with price $${price} is not found.`;
+        }
+        else {
+            response.status = 200;
+            response.message = `Display a list of properties with price $${price}.`;
+        }
+        
+        return response;
 
     } catch(error) {
         console.log(error);
