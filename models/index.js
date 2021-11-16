@@ -47,6 +47,15 @@ async function addData(){
       sizeInSqFt: 700,
       isSale: true,
     });
+
+    await Property.create({
+      price: 700000,
+      location: 'Canada',
+      noOfBedrooms: 6,
+      sizeInSqFt: 1500,
+      isRent: true,
+    });
+
   } catch(error){
     console.log(error);
   }
