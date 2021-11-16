@@ -53,6 +53,38 @@ async function addData(){
       location: 'Canada',
       noOfBedrooms: 6,
       sizeInSqFt: 1500,
+      isSale: true,
+    });
+
+    await Property.create({
+      price: 800000,
+      location: 'China',
+      noOfBedrooms: 15,
+      sizeInSqFt: 1850,
+      isSale: true,
+    });
+
+    await Property.create({
+      price: 1000000,
+      location: 'London',
+      noOfBedrooms: 9,
+      sizeInSqFt: 950,
+      isSale: true,
+    });
+
+    await Property.create({
+      price: 1200000,
+      location: 'Paris',
+      noOfBedrooms: 10,
+      sizeInSqFt: 15000,
+      isSale: true,
+    });
+
+    await Property.create({
+      price: 8000,
+      location: 'Europe',
+      noOfBedrooms: 11,
+      sizeInSqFt: 200,
       isRent: true,
     });
 
