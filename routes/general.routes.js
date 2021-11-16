@@ -19,6 +19,8 @@ const {findSelectedProperty, latest6Properties, searchProperties, getAllProperti
 // router.get('/properties/:propertyId', async (request,response) => await findSelectedProperty(request,response));
 router.get('/properties/latest/6', async (request,response) => await latest6Properties(request,response));
 router.get('/properties/search/:price', async (request,response) => await searchProperties(request,response));
+router.get('/properties/search/isRent/:isRent', async (request,response) => await searchProperties(request,response));
+router.get('/properties/search/isSale/:isSale', async (request,response) => await searchProperties(request,response));
 // router.get('/properties/allProperties', async (request,response) => await getAllProperties(request,response));
 
 module.exports = router;

@@ -114,17 +114,13 @@ async function searchProperties(price){
             data: null
         }
 
-        const newPropertyData = [];
+        const propertyData = [];
         const property = await Property.findAll();
-        
-        const propertyData = property.map(function(result) {
-            return result;
-        });
-       
-        for (let i = 0; i < propertyData.length; i++)  {
-            if (propertyData[i].price === price) { 
-                newPropertyData.push(propertyData[i])
-                response.data = newPropertyData; 
+  
+        for (let i = 0; i < property.length; i++) {
+            if (property[i].price === price) { 
+                propertyData.push(property[i])
+                response.data = propertyData; 
             }
         }
         
