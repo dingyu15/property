@@ -29,8 +29,8 @@ Agent.belongsTo(Property, {
 (async() => {
     try{
         await sequelize.authenticate();
-        await sequelize.sync({force:true});
-        await addData();
+        //await sequelize.sync({force:true});
+        //await addData();
         console.log('Connection to database established successfully.')
     } catch(error){
         console.error("Unable to connect to database:", error);
