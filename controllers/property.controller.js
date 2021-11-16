@@ -2,16 +2,12 @@ const service = require("../services/property.service");
 
 async function handleAddProperty(request, response){
     try{
-
-        //Add code here:
-
-        /* Example:,
-        const result = await service.addProperty(request.body.id, request.body.valuation, request.body.location, request.body.bedrooms, request.body.squareFeet, request.body.saleOrRent));
+        if(typeof request.body.price !== "number" || typeof request.body.noOfBedrooms !== "number" || typeof request.body.sizeInSqFt !== "number") {
+            response.status(400);
+            return response.json({message:"Incorrect request data"});
+        };
+        const result = await service.addProperty(request.body.price, request.body.location, request.body.noOfBedrooms, request.body.sizeInSqFt, request.body.isSale, request.body.isRent);
         return response.json(result);
-        */
-        
-        return;
-
     } catch (error){
         console.log(error);
         throw error;
@@ -22,8 +18,10 @@ async function handleAddProperty(request, response){
 //     try{
 //         //Add code here:
 
-
-
+            /* Example:,
+            const result = await service.addProperty(request.body.id, request.body.valuation, request.body.location, request.body.bedrooms, request.body.squareFeet, request.body.saleOrRent);
+            return response.json(result);
+            */
         
 //         return;
 //     } catch (error){
@@ -92,19 +90,16 @@ async function searchProperties(request, response) {
 //     }
 // };
 
-// async function getAllProperties(request, response) {
-//     try{
-//         //Add code here:
-
-
-
-
-//         return;
-//     } catch (error){
-//         console.log(error);
-//         throw error;
-//     }
-// };
+async function getAllProperties(request, response) {
+    try{
+        response.status(200);
+        const result = await service.getAll();
+        return response.json(result);
+    } catch (error){
+        console.log(error);
+        throw error;
+    }
+};
 
 
 
@@ -115,5 +110,5 @@ module.exports = {
     latest6Properties,
     searchProperties,
     // findSelectedProperty,
-    // getAllProperties,    
+    getAllProperties,    
 }

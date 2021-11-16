@@ -10,10 +10,21 @@ const sequelize = new Sequelize("postgres://ofhsivxyqfinco:98fbd7f4997ffa957b166
     }
 });
 
+// Import models
 const Customer = require('./customer.model')(sequelize);
 const Agent = require('./agent.model')(sequelize);
 const Property = require('./property.model')(sequelize);
 
+// Create associations
+Customer.belongsTo(Property, {
+  foreignKey:"customerId",
+  as:"customer"
+});
+
+Agent.belongsTo(Property, {
+  foreignKey:"agentId",
+  as:"agent"
+});
 
 (async() => {
     try{
@@ -30,7 +41,11 @@ const Property = require('./property.model')(sequelize);
 async function addData(){
   try{
     await Property.create({
-      price: 500000
+      price: 500000,
+      location: 'Sembawang',
+      noOfBedrooms: 4,
+      sizeInSqFt: 700,
+      isSale: true,
     });
   } catch(error){
     console.log(error);
