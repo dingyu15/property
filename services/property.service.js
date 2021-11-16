@@ -1,3 +1,4 @@
+const e = require("express");
 const {Property, Agent, Customer} = require("../models/index.js");
 
 async function addProperty(price, location, bedrooms, size, isSale, isRent){
@@ -105,17 +106,38 @@ async function getLatestProperties(createdAtDate){
     }
 }
 
-async function searchProperties(searchParameter){
+async function searchProperties(price){
     try{
         const response = {
             status: null,
             message: null,
             data: null
         }
+
+        const newPropertyData = [];
+        const property = await Property.findAll();
+        
+        const propertyData = property.map(function(result) {
+            return result;
+        });
        
-        //Add business logic here:
-
-
+        for (let i = 0; i < propertyData.length; i++)  {
+            if (propertyData[i].price === price) { 
+                newPropertyData.push(propertyData[i])
+                response.data = newPropertyData; 
+            }
+        }
+        
+        if(response.data === null) {
+            response.status = 404;
+            response.message = `Property with price $${price} is not found.`;
+        }
+        else {
+            response.status = 200;
+            response.message = `Display a list of properties with price $${price}.`;
+        }
+        
+        return response;
 
     } catch(error) {
         console.log(error);
