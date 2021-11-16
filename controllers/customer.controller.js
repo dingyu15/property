@@ -90,10 +90,10 @@ async function getAllCustomers(request, response) {
 
 
 module.exports = {
-    customerSignUp,
-    customerLogin,
-    updateCustomer,
-    deleteCustomer,
-    findSelectedCustomer,
-    getAllCustomers,    
+    // customerSignUp,
+    // customerLogin,
+    // updateCustomer,
+    // deleteCustomer,
+    // findSelectedCustomer,
+    // getAllCustomers,    
 }
