@@ -29,11 +29,11 @@ const router = express.Router();
 // router.get('/customer/:customerId', async (request,response) => await findSelectedCustomer(request,response));
 // router.get('/customer/allCustomers', async (request,response) => await getAllCustomers(request,response));
 
-const {handleAddProperty, handleUpdateProperty, handleDeleteProperty} = require('../controllers/property.controller');
+const {associateAgentWithProperty, removeAgentfromProperty, handleAddProperty, handleUpdateProperty, handleDeleteProperty} = require('../controllers/property.controller');
+router.post('/associate/:propertyId', async (request,response) => await associateAgentWithProperty(request,response));
+router.post('/dissociate/:propertyId', async (request,response) => await removeAgentfromProperty(request,response));
 router.post('/properties', async (request,response) => await handleAddProperty(request,response));
-//Change the request.params variable name ':propertyId' if required
-// router.put('/properties/:propertyId', async (request,response) => await handleUpdateProperty(request,response));
-// router.delete('/properties/:propertyId', async (request,response) => await handleDeleteProperty(request,response));
-
+router.put('/properties/:propertyId', async (request,response) => await handleUpdateProperty(request,response));
+router.delete('/properties/:propertyId', async (request,response) => await handleDeleteProperty(request,response));
 
 module.exports = router;

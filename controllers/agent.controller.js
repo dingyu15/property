@@ -76,12 +76,9 @@ async function findSelectedAgent(request, response) {
 
 async function getAllAgents(request, response) {
     try{
-        //Add code here:
-
-
-
-
-        return;
+        response.status(200);
+        const result = await service.getAll();
+        return response.json(result);
     } catch (error){
         console.log(error);
         throw error;
@@ -91,10 +88,10 @@ async function getAllAgents(request, response) {
 
 
 module.exports = {
-    agentSignUp,
-    agentLogin,
-    updateAgent,
-    deleteAgent,
-    findSelectedAgent,
+    // agentSignUp,
+    // agentLogin,
+    // updateAgent,
+    // deleteAgent,
+    // findSelectedAgent,
     getAllAgents,    
 }

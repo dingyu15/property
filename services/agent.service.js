@@ -111,12 +111,31 @@ async function getById(id){
 
 async function getAll(){
     try{
-        return await Agent.findAll();
+        const response = {
+            status: null,
+            message: null,
+            data: null
+        };
+
+        //Fetch all agent:
+        const agent = await Agent.findAll();
+
+        //validation:
+        if (!agent) {
+            response.status = 400;
+            response.message = "There are no agents stored in database";
+            return response;
+        }
+        response.status = 200;
+        response.message = "List of agents stored in database";
+        response.data = agent;
+        return response;
     } catch(error) {
         console.log(error);
         throw error;
     }
-}
+};
+
 
 module.exports = {
     signup,
