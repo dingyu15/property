@@ -1,6 +1,6 @@
-const {Property} = require("../models");
+const {Property, Agent, Customer} = require("../models/index.js");
 
-async function addProperty(newPropertyID, price, location, bedrooms, squareFeet, saleOrRent){
+async function addProperty(price, location, bedrooms, size, isSale, isRent){
     try{
         const response = {
             status: null,
@@ -8,16 +8,32 @@ async function addProperty(newPropertyID, price, location, bedrooms, squareFeet,
             data: null
         }
         
-        //Add business logic here:
+        //Fetch the properties (both rent and sale) currently on the market:
+        const property = await Property.findOne({where: {price, location, noOfBedrooms: bedrooms, sizeInSqFt: size}});
+        
+        //Validation
+        if (property) {
+            response.status = 400;
+            response.message = `Property ${property.id} already exists. Update property instead.`;
+            return response;
+        };
 
+        // Add newProperty to the property list and update database:
+        const newProperty = await Property.create({
+            price,
+            location,
+            noOfBedrooms: bedrooms,
+            sizeInSqFt: size,
+            isSale,
+            isRent
+        });
 
+        //Prepare and send response:
+        response.message = `Property ${newProperty.id} added successfully.`;
+        response.status = 200;
+        response.data = newProperty;
 
-         
-            
-        response.status= 200;
-        response.message = `Property ${newPropertyID} successfully registered.`;
         return response;
-
     } catch (error) {
         console.log(error);
         throw error;
@@ -116,14 +132,28 @@ async function searchProperties(searchParameter){
 //     }
 // }
 
-// async function getAll(){
-//     try{
-//         return await Property.findAll();
-//     } catch(error) {
-//         console.log(error);
-//         throw error;
-//     }
-// }
+async function getAll(){
+    try{
+        //Fetch the property & associated agent(+ customers):
+        const property = await Property.findAll({include:[{model:Agent, as:"agent"}, {model:Customer, as:"customer"}]});
+
+        //Region validation
+        if (!property) {
+            response.status = 200;
+            response.message = "There are no properties stored in database";
+            return response;
+        };
+        if (property) {
+            response.status = 200;
+            response.message = "List of properties in database with agents-in-charge and interested customers";
+            response.data = property;
+            return response;
+        };
+    } catch(error) {
+        console.log(error);
+        throw error;
+    }
+}
 
 module.exports = {
     addProperty,
@@ -132,5 +162,5 @@ module.exports = {
     getLatestProperties,
     searchProperties,
     // getById,
-    // getAll,
+    getAll,
 };
