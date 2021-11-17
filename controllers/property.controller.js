@@ -93,12 +93,12 @@ async function latest6Properties(request, response) {
 // http://localhost:3000/general/properties/search/500000
 async function searchProperties(request, response) {
     try{
-        if (isNaN(parseInt(request.params.price))) {
+        if (isNaN(Number(request.params.price))) {
             response.status(400);
             return response.json({ message: 'Incorrect request data' });
         }
           
-        const result = await service.searchProperties(parseInt(request.params.price));    
+        const result = await service.searchProperties(Number(request.params.price));    
         response.status(result.status);
         return response.json({ data: result.data, message: result.message });
         
