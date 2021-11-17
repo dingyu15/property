@@ -11,6 +11,6 @@ app.get('/', function(req, res){
     res.send("hello world")
 });
 
-app.listen(3000, ()=>{
-    console.log("Connecting to port 3000...");
+app.listen(process.env.PORT, ()=>{
+    console.log(`Connecting to port ${process.env.PORT}...`);
 });
