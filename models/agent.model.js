@@ -11,16 +11,6 @@ module.exports = function(connection) {
           primaryKey: true,
           autoIncrement: true,
         },
-        email: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          field: "email",
-        },
-        pwd: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          field: "password",
-        },
         fullName:{
           type: DataTypes.STRING,
           allowNull: false,
@@ -30,6 +20,16 @@ module.exports = function(connection) {
           type: DataTypes.INTEGER,
           allowNull: false,
           field: "contact_no"
+        },
+        email: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          field: "email",
+        },
+        pwd: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          field: "password",
         },
         createdAt: {
           type: DataTypes.DATE,

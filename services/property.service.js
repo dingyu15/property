@@ -1,4 +1,88 @@
+const e = require("express");
 const {Property, Agent, Customer} = require("../models/index.js");
+
+async function associate(propertyId, agentId) {
+    try {
+        const response = {
+            message: null,
+            status: null,
+            data: null,
+        };
+
+        //Fetch the property and agent:
+        const property = await Property.findByPk(propertyId);
+        const agent = await Agent.findByPk(agentId);
+        
+        //validation
+        if (!property){
+            response.status = 404;
+            response.message = `Property not found for ID: ${propertyId}`;
+            return response;
+        }
+        
+        if (property.agentId) {
+            response.status = 400;
+            response.message = "Another agent is already in charge of this property.";
+            return response;
+        }
+
+        if (!agent){ 
+            //Error: No agent 
+            response.status = 404;
+            response.message = `Agent not found for ID: ${agentId}`;
+            return response;
+        }; 
+
+        // Add agentId to the property and update database:
+        property.agentId = agentId;
+        await property.save();
+
+        //Prepare and send response:
+        response.message = `Property ID ${propertyId} has been assigned to agent ID ${agentId} successfully.`;
+        response.status = 200;
+        response.data = property;
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+async function dissociate(propertyId) {
+    try {
+        const response = {
+            message: null,
+            status: null,
+            data: null,
+        };
+
+        //Fetch the property:
+        const property = await Property.findByPk(propertyId);
+        
+        //validation
+        if (!property){
+            response.status = 404;
+            response.message = `Property not found for ID: ${propertyId}`;
+            return response;
+        };
+        if (!property.agentId) {
+            response.status = 400;
+            response.message = `Error: Property ID ${propertyId} is already not assigned to an agent.`;
+            return response;
+        };
+
+        // Remove agentId from the property and update database:
+        property.agentId = null;
+        await property.save();
+
+        //Prepare and send response:
+        response.status = 200;
+        response.message = `Successful: Property ID ${propertyId} can now be re-assigned to another agent.`;
+        response.data = property;
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 async function addProperty(price, location, bedrooms, size, isSale, isRent){
     try{
@@ -32,60 +116,75 @@ async function addProperty(price, location, bedrooms, size, isSale, isRent){
         response.message = `Property ${newProperty.id} added successfully.`;
         response.status = 200;
         response.data = newProperty;
-
         return response;
     } catch (error) {
         console.log(error);
         throw error;
     }
+};
+
+async function updateProperty(propertyId, price, location, bedrooms, size, isSale, isRent){
+    try{
+        const response = {
+            status: null,
+            message: null,
+            data: null
+        }
+        
+        //Fetch the properties (both rent and sale) currently on the market:
+        const property = await Property.findByPk(propertyId);
+        
+        //Validation
+        if (!property) {
+            response.status = 404;
+            response.message = `Property not found for ID: ${propertyId}. Please add property instead.`;
+            return response;
+        };
+        // update vehicle details and update database:
+        property.price = price;
+        property.location = location;
+        property.noOfBedrooms = bedrooms;
+        property.sizeInSqFt = size;
+        property.isSale = isSale;
+        property.isRent = isRent;
+        await property.save();
+
+        //Prepare and send response:
+        response.status = 200;
+        response.message = `Property for ID ${propertyId} successfully updated.`;
+        response.data = property;
+        return response;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
+async function removeProperty(propertyId){
+    try {
+        const response = {
+            status: null,
+            message: null,
+            data: null
+        };
+
+        //Fetch the property:
+        const property = await Property.destroy({where: {id: propertyId}});
+        
+        //Region validation
+        if (!property){ 
+            response.status = 404;
+            response.message = `Property not found for ID: ${propertyId}`;
+            return response;
+        };
+        response.status= 200;
+        response.message = `Property ${propertyId} is successfully deleted.`;
+        return response;
+    } catch(error) {
+        console.log(error);
+        throw error;
+    }
 }
-
-// async function updateProperty(propertyID, price, location, bedrooms, squareFeet, saleOrRent){
-//     try{
-//         const response = {
-//             status: null,
-//             message: null,
-//             data: null
-//         }
-        
-//         //Add business logic here:
-
-
-
-         
-            
-//         response.status= 200;
-//         response.message = `Property ${propertyID} successfully registered.`;
-//         return response;
-
-//     } catch (error) {
-//         console.log(error);
-//         throw error;
-//     }
-// }
-
-// async function removeProperty(propertyID){
-//     try {
-//         const response = {
-//             status: null,
-//             message: null,
-//             data: null
-//         }
-       
-//         //Add business logic here:
-
-
-
-
-//         response.status= 200;
-//         response.message = `Property ${propertyID} successfully deleted.`;
-//         return response;
-        
-//     } catch(error) {
-//         console.log(error);
-//         throw error;
-//     }
-// }
 
 async function getLatestProperties(createdAtDate){
     try{
@@ -105,17 +204,34 @@ async function getLatestProperties(createdAtDate){
     }
 }
 
-async function searchProperties(searchParameter){
+async function searchProperties(price){
     try{
         const response = {
             status: null,
             message: null,
             data: null
         }
-       
-        //Add business logic here:
 
-
+        const propertyData = [];
+        const property = await Property.findAll();
+  
+        for (let i = 0; i < property.length; i++) {
+            if (property[i].price === price) { 
+                propertyData.push(property[i])
+                response.data = propertyData; 
+            }
+        }
+        
+        if(response.data === null) {
+            response.status = 404;
+            response.message = `Property with price $${price} is not found.`;
+        }
+        else {
+            response.status = 200;
+            response.message = `Display a list of properties with price $${price}.`;
+        }
+        
+        return response;
 
     } catch(error) {
         console.log(error);
@@ -134,6 +250,12 @@ async function searchProperties(searchParameter){
 
 async function getAll(){
     try{
+        const response = {
+            status: null,
+            message: null,
+            data: null
+        };
+
         //Fetch the property & associated agent(+ customers):
         const property = await Property.findAll({include:[{model:Agent, as:"agent"}, {model:Customer, as:"customer"}]});
 
@@ -157,8 +279,10 @@ async function getAll(){
 
 module.exports = {
     addProperty,
-    // updateProperty,
-    // removeProperty,
+    associate,
+    dissociate,
+    updateProperty,
+    removeProperty,
     getLatestProperties,
     searchProperties,
     // getById,
