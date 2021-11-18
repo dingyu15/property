@@ -204,7 +204,7 @@ async function getLatestProperties(createdAtDate){
     }
 }
 
-async function searchProperties(price){
+async function searchPropertiesPrice(price){
     try{
         const response = {
             status: null,
@@ -239,14 +239,72 @@ async function searchProperties(price){
     }
 }
 
-// async function getById(id){
-//     try{
-//         return await Property.findByPk(id);
-//     } catch(error) {
-//         console.log(error);
-//         throw error;
-//     }
-// }
+async function searchPropertiesRent(isRent){
+    const booleanIsRent = JSON.parse(isRent);
+    try{
+        const response = {
+        status: null,
+        message: null,
+        data: null
+        }
+
+        const property = await Property.findAll({where: {isRent: booleanIsRent}});
+        response.data = property; 
+                    
+        if(response.data === null) {
+            response.status = 404;
+            response.message = `Property with isRent ${isRent} is not found.`;
+            }
+            else {
+            response.status = 200;
+            response.message = `Display a list of properties with isRent ${isRent}.`;
+            }
+                    
+            return response;
+            
+            } catch(error) {
+                console.log(error);
+                throw error;
+            }
+        }
+
+async function searchPropertiesSale(isSale){
+    const booleanIsSale = JSON.parse(isSale);
+    try{
+        const response = {
+        status: null,
+        message: null,
+        data: null
+        }
+        
+        const property = await Property.findAll({where: {isSale: booleanIsSale}});
+        response.data = property; 
+                            
+        if(response.data === null) {
+            response.status = 404;
+            response.message = `Property with isSale ${isSale} is not found.`;
+        }
+        else {
+            response.status = 200;
+            response.message = `Display a list of properties with isSale ${isSale}.`;
+        }
+                            
+        return response;
+                    
+        } catch(error) {
+            console.log(error);
+            throw error;
+        }
+}
+
+async function getById(id){
+    try{
+        return await Property.findByPk(id);
+    } catch(error) {
+        console.log(error);
+        throw error;
+    }
+}
 
 async function getAll(){
     try{
@@ -284,7 +342,9 @@ module.exports = {
     updateProperty,
     removeProperty,
     getLatestProperties,
-    searchProperties,
+    searchPropertiesPrice,
+    searchPropertiesRent,
+    searchPropertiesSale,
     // getById,
     getAll,
 };
