@@ -4,6 +4,8 @@ const app = express();
 const generalRouter = require('./general.routes');
 const protectedRouter = require('./protected.routes');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+app.use(cors());
 
 // Added the following code to enable "Access-Control-Origin" on localhost ajax request
 app.use(function(request, response, next) {
