@@ -90,23 +90,59 @@ async function latest6Properties(request, response) {
     }
 };
 
-// http://localhost:3000/general/properties/search/500000
-async function searchProperties(request, response) {
+//GET http://localhost:3000/general/properties/search/price/500000
+async function searchPropertiesPrice(request, response) {
     try{
-        if (isNaN(parseInt(request.params.price))) {
+        if (isNaN(Number(request.params.price))) {
             response.status(400);
-            return response.json({ message: 'Incorrect request data' });
-        }
-          
-        const result = await service.searchProperties(parseInt(request.params.price));    
+            return response.json({ message: `${request.params.price} is an incorrect request data for price` });
+        }     
+        const result = await service.searchPropertiesPrice(Number(request.params.price));    
         response.status(result.status);
-        return response.json({ data: result.data, message: result.message });
-        
+        return response.json({ data: result.data, message: result.message });       
     } catch (error){
         console.log(error);
         throw error;
     }
 };
+
+// GET http://localhost:3000/general/properties/search/isRent/true
+async function searchPropertiesRent(request, response) { 
+    try{    
+        if ((request.params.isRent).toLowerCase() === 'true' || (request.params.isRent).toLowerCase() === 'false') {
+            const result = await service.searchPropertiesRent((request.params.isRent).toLowerCase());    
+            response.status(result.status);
+            return response.json({ data: result.data, message: result.message }); 
+        }
+        else {
+            response.status(400);
+            return response.json({ message: `${request.params.isRent} is an incorrect request data for isRent` });
+        } 
+    } catch (error){
+        console.log(error);
+        throw error;
+    }  
+};
+
+// GET http://localhost:3000/general/properties/search/isSale/true
+async function searchPropertiesSale(request, response) {
+    try{
+        if ((request.params.isSale).toLowerCase() === 'true' || (request.params.isSale).toLowerCase() === 'false') {
+            const result = await service.searchPropertiesSale((request.params.isSale).toLowerCase());    
+            response.status(result.status);
+            return response.json({ data: result.data, message: result.message }); 
+        }
+        else {
+            response.status(400);
+            return response.json({ message: `${request.params.isSale} is an incorrect request data for isSale` });
+        }
+    } catch (error){
+        console.log(error);
+        throw error;
+    }    
+};
+
+
 
 // async function findSelectedProperty(request, response) {
 //     try{
@@ -142,7 +178,9 @@ module.exports = {
     handleUpdateProperty,
     handleDeleteProperty,
     latest6Properties,
-    searchProperties,
+    searchPropertiesPrice,
+    searchPropertiesRent,
+    searchPropertiesSale,
     // findSelectedProperty,
     getAllProperties,    
 }
