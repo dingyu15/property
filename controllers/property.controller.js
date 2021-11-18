@@ -74,16 +74,14 @@ async function handleDeleteProperty(request, response) {
     }
 };
 
+// http://localhost:3000/general/properties/latest/6
 async function latest6Properties(request, response) {
     try{
-        //Add code here:
-
-        /* Example:,
-        const result = await service.addProperty(request.body.id, request.body.valuation, request.body.location, request.body.bedrooms, request.body.squareFeet, request.body.saleOrRent));
+  
+        const result = await service.getLatestProperties();
         return response.json(result);
-        */
+        
 
-        return;
     } catch (error){
         console.log(error);
         throw error;

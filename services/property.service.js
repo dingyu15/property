@@ -1,3 +1,4 @@
+const { response } = require("express");
 const e = require("express");
 const {Property, Agent, Customer} = require("../models/index.js");
 
@@ -188,15 +189,18 @@ async function removeProperty(propertyId){
 
 async function getLatestProperties(createdAtDate){
     try{
-        const response = {
-            status: null,
-            message: null,
-            data: null
-        }
        
-        //Add business logic here:
+    // 1. Draw data from "created_at" in table
+    // 2. Retreive latest dates and time
+    // 3. Sort out and display to client
+    const results = await Property.findAll({
+        order: [['createdAt', 'DESC']],
+        limit: 2
+    });
 
-
+    console.log("Property.createdAt()", JSON.stringify(results));
+    
+        return results;
 
     } catch(error) {
         console.log(error);
