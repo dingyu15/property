@@ -5,6 +5,14 @@ const generalRouter = require('./general.routes');
 const protectedRouter = require('./protected.routes');
 const bodyParser = require('body-parser');
 
+// Added the following code to enable "Access-Control-Origin" on localhost ajax request
+app.use(function(request, response, next) {
+    response.header('Access-Control-Allow-Origin', '*');
+    response.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+    response.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
+
 app.use(bodyParser.json());
 app.use('/general', generalRouter);
 app.use('/protected', protectedRouter);
