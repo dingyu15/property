@@ -7,9 +7,9 @@ async function associateAgentWithProperty(request, response) {
             response.status(400);
             return response.json({message:"Incorrect request data"});
         }
-        response.status(200);
+        response.status(result.status);
         const result = await service.associate(propertyId, request.body.agentId);
-        response.json(result);
+        return response.json({ data: result.data, message: result.message });
     } catch(error){
         console.log(error);
         throw error;
@@ -23,9 +23,9 @@ async function removeAgentfromProperty(request, response) {
             response.status(400);
             return response.json({message:"Incorrect request data"});
         }
-        response.status(200);
+        response.status(result.status);
         const result = await service.dissociate(Number(request.params.propertyId));
-        response.json(result);
+        return response.json({ data: result.data, message: result.message });
     } catch(error){
         console.log(error);
         throw error;
@@ -39,8 +39,8 @@ async function handleAddProperty(request, response){
             return response.json({message:"Incorrect request data"});
         };
         const result = await service.addProperty(request.body.price, request.body.location, request.body.noOfBedrooms, request.body.sizeInSqFt, request.body.isSale, request.body.isRent);
-        response.status(200);
-        return response.json(result);
+        response.status(result.status);
+        return response.json({ data: result.data, message: result.message });
     } catch (error){
         console.log(error);
         throw error;
@@ -53,10 +53,10 @@ async function handleUpdateProperty(request, response) {
             response.status(400);
             return response.json({message:"Incorrect request data"});
         };
-        response.status(200);
+        response.status(result.status);
         const id = Number(request.params.propertyId);
         const result = await service.updateProperty(id, request.body.price, request.body.location, request.body.noOfBedrooms, request.body.sizeInSqFt, request.body.isSale, request.body.isRent);
-        return response.json(result);
+        return response.json({ data: result.data, message: result.message });
     } catch (error){
         console.log(error);
         throw error;
@@ -65,9 +65,9 @@ async function handleUpdateProperty(request, response) {
 
 async function handleDeleteProperty(request, response) {
     try{
-        response.status(200);
+        response.status(result.status);
         const result = await service.removeProperty(Number(request.params.propertyId));
-        return response.json(result);
+        return response.json({message: result.message });
     } catch (error){
         console.log(error);
         throw error;
@@ -140,21 +140,21 @@ async function searchPropertiesSale(request, response) {
     }    
 };
 
-
-
-// async function findSelectedProperty(request, response) {
-//     try{
-//         //Add code here:
-
-
-
-
-//         return;
-//     } catch (error){
-//         console.log(error);
-//         throw error;
-//     }
-// };
+async function findSelectedProperty(request, response) {
+    try{
+        const propertyId = Number(request.params.propertyId);
+        if(typeof propertyId === NaN) {
+            response.status(400);
+            return response.json({message:"Incorrect request data"});
+        }
+        response.status(result.status);
+        const result = await service.getById(propertyId);
+        return response.json({ data: result.data, message: result.message });
+    } catch (error){
+        console.log(error);
+        throw error;
+    }
+};
 
 async function getAllProperties(request, response) {
     try{
@@ -179,6 +179,6 @@ module.exports = {
     searchPropertiesPrice,
     searchPropertiesRent,
     searchPropertiesSale,
-    // findSelectedProperty,
+    findSelectedProperty,
     getAllProperties,    
 }

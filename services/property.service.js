@@ -1,10 +1,8 @@
-const { response } = require("express");
-const e = require("express");
 const {Property, Agent, Customer} = require("../models/index.js");
 
 async function associate(propertyId, agentId) {
     try {
-        const response = {
+        const result = {
             message: null,
             status: null,
             data: null,
@@ -16,22 +14,22 @@ async function associate(propertyId, agentId) {
         
         //validation
         if (!property){
-            response.status = 404;
-            response.message = `Property not found for ID: ${propertyId}`;
-            return response;
+            result.status = 404;
+            result.message = `Property not found for ID: ${propertyId}`;
+            return result;
         }
         
         if (property.agentId) {
-            response.status = 400;
-            response.message = "Another agent is already in charge of this property.";
-            return response;
+            result.status = 400;
+            result.message = "Another agent is already in charge of this property.";
+            return result;
         }
 
         if (!agent){ 
             //Error: No agent 
-            response.status = 404;
-            response.message = `Agent not found for ID: ${agentId}`;
-            return response;
+            result.status = 404;
+            result.message = `Agent not found for ID: ${agentId}`;
+            return result;
         }; 
 
         // Add agentId to the property and update database:
@@ -39,10 +37,10 @@ async function associate(propertyId, agentId) {
         await property.save();
 
         //Prepare and send response:
-        response.message = `Property ID ${propertyId} has been assigned to agent ID ${agentId} successfully.`;
-        response.status = 200;
-        response.data = property;
-        return response;
+        result.message = `Property ID ${propertyId} has been assigned to agent ID ${agentId} successfully.`;
+        result.status = 200;
+        result.data = property;
+        return result;
     } catch (error) {
         console.log(error);
     }
@@ -50,7 +48,7 @@ async function associate(propertyId, agentId) {
 
 async function dissociate(propertyId) {
     try {
-        const response = {
+        const result = {
             message: null,
             status: null,
             data: null,
@@ -61,14 +59,14 @@ async function dissociate(propertyId) {
         
         //validation
         if (!property){
-            response.status = 404;
-            response.message = `Property not found for ID: ${propertyId}`;
-            return response;
+            result.status = 404;
+            result.message = `Property not found for ID: ${propertyId}`;
+            return result;
         };
         if (!property.agentId) {
-            response.status = 400;
-            response.message = `Error: Property ID ${propertyId} is already not assigned to an agent.`;
-            return response;
+            result.status = 400;
+            result.message = `Error: Property ID ${propertyId} is already not assigned to an agent.`;
+            return result;
         };
 
         // Remove agentId from the property and update database:
@@ -76,10 +74,10 @@ async function dissociate(propertyId) {
         await property.save();
 
         //Prepare and send response:
-        response.status = 200;
-        response.message = `Successful: Property ID ${propertyId} can now be re-assigned to another agent.`;
-        response.data = property;
-        return response;
+        result.status = 200;
+        result.message = `Successful: Property ID ${propertyId} can now be re-assigned to another agent.`;
+        result.data = property;
+        return result;
     } catch (error) {
         console.log(error);
     }
@@ -87,7 +85,7 @@ async function dissociate(propertyId) {
 
 async function addProperty(price, location, bedrooms, size, isSale, isRent){
     try{
-        const response = {
+        const result = {
             status: null,
             message: null,
             data: null
@@ -98,9 +96,9 @@ async function addProperty(price, location, bedrooms, size, isSale, isRent){
         
         //Validation
         if (property) {
-            response.status = 400;
-            response.message = `Property ${property.id} already exists. Update property instead.`;
-            return response;
+            result.status = 400;
+            result.message = `Property ${property.id} already exists. Update property instead.`;
+            return result;
         };
 
         // Add newProperty to the property list and update database:
@@ -114,10 +112,10 @@ async function addProperty(price, location, bedrooms, size, isSale, isRent){
         });
 
         //Prepare and send response:
-        response.message = `Property ${newProperty.id} added successfully.`;
-        response.status = 200;
-        response.data = newProperty;
-        return response;
+        result.message = `Property ${newProperty.id} added successfully.`;
+        result.status = 200;
+        result.data = newProperty;
+        return result;
     } catch (error) {
         console.log(error);
         throw error;
@@ -126,7 +124,7 @@ async function addProperty(price, location, bedrooms, size, isSale, isRent){
 
 async function updateProperty(propertyId, price, location, bedrooms, size, isSale, isRent){
     try{
-        const response = {
+        const result = {
             status: null,
             message: null,
             data: null
@@ -137,9 +135,9 @@ async function updateProperty(propertyId, price, location, bedrooms, size, isSal
         
         //Validation
         if (!property) {
-            response.status = 404;
-            response.message = `Property not found for ID: ${propertyId}. Please add property instead.`;
-            return response;
+            result.status = 404;
+            result.message = `Property not found for ID: ${propertyId}. Please add property instead.`;
+            return result;
         };
         // update vehicle details and update database:
         property.price = price;
@@ -151,10 +149,10 @@ async function updateProperty(propertyId, price, location, bedrooms, size, isSal
         await property.save();
 
         //Prepare and send response:
-        response.status = 200;
-        response.message = `Property for ID ${propertyId} successfully updated.`;
-        response.data = property;
-        return response;
+        result.status = 200;
+        result.message = `Property for ID ${propertyId} successfully updated.`;
+        result.data = property;
+        return result;
     } catch (error) {
         console.log(error);
         throw error;
@@ -163,7 +161,7 @@ async function updateProperty(propertyId, price, location, bedrooms, size, isSal
 
 async function removeProperty(propertyId){
     try {
-        const response = {
+        const result = {
             status: null,
             message: null,
             data: null
@@ -174,13 +172,13 @@ async function removeProperty(propertyId){
         
         //Region validation
         if (!property){ 
-            response.status = 404;
-            response.message = `Property not found for ID: ${propertyId}`;
-            return response;
+            result.status = 404;
+            result.message = `Property not found for ID: ${propertyId}`;
+            return result;
         };
-        response.status= 200;
-        response.message = `Property ${propertyId} is successfully deleted.`;
-        return response;
+        result.status= 200;
+        result.message = `Property ${propertyId} is successfully deleted.`;
+        return result;
     } catch(error) {
         console.log(error);
         throw error;
@@ -193,14 +191,11 @@ async function getLatestProperties(createdAtDate){
     // 1. Draw data from "created_at" in table
     // 2. Retreive latest dates and time
     // 3. Sort out and display to client
-    const results = await Property.findAll({
+    const result = await Property.findAll({
         order: [['createdAt', 'DESC']],
         limit: 2
-    });
-
-    console.log("Property.createdAt()", JSON.stringify(results));
-    
-        return results;
+    });   
+        return result;
 
     } catch(error) {
         console.log(error);
@@ -210,7 +205,7 @@ async function getLatestProperties(createdAtDate){
 
 async function searchPropertiesPrice(price){
     try{
-        const response = {
+        const result = {
             status: null,
             message: null,
             data: null
@@ -222,20 +217,20 @@ async function searchPropertiesPrice(price){
         for (let i = 0; i < property.length; i++) {
             if (property[i].price === price) { 
                 propertyData.push(property[i])
-                response.data = propertyData; 
+                result.data = propertyData; 
             }
         }
         
-        if(response.data === null) {
-            response.status = 404;
-            response.message = `Property with price $${price} is not found.`;
+        if(result.data === null) {
+            result.status = 404;
+            result.message = `Property with price $${price} is not found.`;
         }
         else {
-            response.status = 200;
-            response.message = `Display a list of properties with price $${price}.`;
+            result.status = 200;
+            result.message = `Display a list of properties with price $${price}.`;
         }
         
-        return response;
+        return result;
 
     } catch(error) {
         console.log(error);
@@ -246,25 +241,25 @@ async function searchPropertiesPrice(price){
 async function searchPropertiesRent(isRent){
     const booleanIsRent = JSON.parse(isRent);
     try{
-        const response = {
+        const result = {
         status: null,
         message: null,
         data: null
         }
 
         const property = await Property.findAll({where: {isRent: booleanIsRent}});
-        response.data = property; 
+        result.data = property; 
                     
-        if(response.data === null) {
-            response.status = 404;
-            response.message = `Property with isRent ${isRent} is not found.`;
+        if(result.data === null) {
+            result.status = 404;
+            result.message = `Property with isRent ${isRent} is not found.`;
             }
             else {
-            response.status = 200;
-            response.message = `Display a list of properties with isRent ${isRent}.`;
+            result.status = 200;
+            result.message = `Display a list of properties with isRent ${isRent}.`;
             }
                     
-            return response;
+            return result;
             
             } catch(error) {
                 console.log(error);
@@ -275,25 +270,25 @@ async function searchPropertiesRent(isRent){
 async function searchPropertiesSale(isSale){
     const booleanIsSale = JSON.parse(isSale);
     try{
-        const response = {
+        const result = {
         status: null,
         message: null,
         data: null
         }
         
         const property = await Property.findAll({where: {isSale: booleanIsSale}});
-        response.data = property; 
+        result.data = property; 
                             
-        if(response.data === null) {
-            response.status = 404;
-            response.message = `Property with isSale ${isSale} is not found.`;
+        if(result.data === null) {
+            result.status = 404;
+            result.message = `Property with isSale ${isSale} is not found.`;
         }
         else {
-            response.status = 200;
-            response.message = `Display a list of properties with isSale ${isSale}.`;
+            result.status = 200;
+            result.message = `Display a list of properties with isSale ${isSale}.`;
         }
                             
-        return response;
+        return result;
                     
         } catch(error) {
             console.log(error);
@@ -312,7 +307,7 @@ async function getById(id){
 
 async function getAll(){
     try{
-        const response = {
+        const result = {
             status: null,
             message: null,
             data: null
@@ -323,15 +318,15 @@ async function getAll(){
 
         //Region validation
         if (!property) {
-            response.status = 200;
-            response.message = "There are no properties stored in database";
-            return response;
+            result.status = 200;
+            result.message = "There are no properties stored in database";
+            return result;
         };
         if (property) {
-            response.status = 200;
-            response.message = "List of properties in database with agents-in-charge and interested customers";
-            response.data = property;
-            return response;
+            result.status = 200;
+            result.message = "List of properties in database with agents-in-charge and interested customers";
+            result.data = property;
+            return result;
         };
     } catch(error) {
         console.log(error);
@@ -349,6 +344,6 @@ module.exports = {
     searchPropertiesPrice,
     searchPropertiesRent,
     searchPropertiesSale,
-    // getById,
+    getById,
     getAll,
 };

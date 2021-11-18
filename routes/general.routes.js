@@ -14,9 +14,8 @@ router.get('/agent/all', async (request, response) => await getAllAgents(request
 // router.post('/customer/login', async (request,response) => await customerLogin(request,response));
 
 
-const {findSelectedProperty, latest6Properties, searchPropertiesPrice, searchPropertiesRent, searchPropertiesSale, getAllProperties} = require('../controllers/property.controller');  
-    //Change the request.params variable name ':propertyId' if required
-// router.get('/properties/:propertyId', async (request,response) => await findSelectedProperty(request,response));
+const {findSelectedProperty, latest6Properties, searchPropertiesPrice, searchPropertiesRent, searchPropertiesSale, getAllProperties} = require('../controllers/property.controller');
+router.get('/properties/:propertyId', async (request,response) => await findSelectedProperty(request,response));
 router.get('/properties/latest/6', async (request,response) => await latest6Properties(request,response));
 router.get('/properties/search/price/:price', async (request,response) => await searchPropertiesPrice(request,response));
 router.get('/properties/search/isRent/:isRent', async (request,response) => await searchPropertiesRent(request,response));

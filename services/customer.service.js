@@ -6,7 +6,7 @@ const {Customer} = require("../models");
 
 async function signup(email, password){
     try{
-        const response = {
+        const result = {
             status: null,
             message: null,
             data: null
@@ -18,9 +18,9 @@ async function signup(email, password){
 
          
             
-        response.status= 200;
-        response.message = `User account ${email} successfully registered.`;
-        return response;
+        result.status= 200;
+        result.message = `User account ${email} successfully registered.`;
+        return result;
 
     } catch (error) {
         console.log(error);
@@ -30,7 +30,7 @@ async function signup(email, password){
 
 async function login(email, password){
     try {
-        const response = {
+        const result = {
             status: null,
             message: null,
             data: null
@@ -54,7 +54,7 @@ async function login(email, password){
 
 async function updateAccount(email){
     try {
-        const response = {
+        const result = {
             status: null,
             message: null,
             data: null
@@ -78,7 +78,7 @@ async function updateAccount(email){
 
 async function removeAccount(email, password){
     try {
-        const response = {
+        const result = {
             status: null,
             message: null,
             data: null
