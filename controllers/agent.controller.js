@@ -32,28 +32,33 @@ async function agentLogin(request, response) {
     }
 };
 
-async function updateAgent(request, response) {
+async function findAgentBySpecialty(request, response) {
     try{
-        //Add code here:
-
-
-
-        
-        return;
+        if ((request.params.search) === 'luxury' || (request.params.search) === 'hdb' || (request.params.search) === 'condominium') {
+            const result = await service.findBySpecialty(request.params.search);    
+            response.status(result.status);
+            return response.json({ data: result.data, message: result.message }); 
+        } else {
+            response.status(400);
+            return response.json({ message: `${request.params.search} is an incorrect request data for specialty` });
+        }
     } catch (error){
         console.log(error);
         throw error;
     }
 };
 
-async function deleteAgent(request, response) {
+async function findAgentByRegion(request, response) {
     try{
-        //Add code here:
+        if ((request.params.search) === 'north' || (request.params.search) === 'south' || (request.params.search) === 'east' || (request.params.search) === 'west') {
+            const result = await service.findByRegion(request.params.search);    
+            response.status(result.status);
+            return response.json({ data: result.data, message: result.message }); 
+        } else {
+            response.status(400);
+            return response.json({ message: `${request.params.search} is an incorrect request data for region` });
 
-
-
-        
-        return;
+        }
     } catch (error){
         console.log(error);
         throw error;
@@ -62,12 +67,14 @@ async function deleteAgent(request, response) {
 
 async function findSelectedAgent(request, response) {
     try{
-        //Add code here:
-
-
-
-        
-        return;
+        const agentId = Number(request.params.agentId);
+        if(typeof agentId === NaN) {
+            response.status(400);
+            return response.json({message:"Incorrect request data"});
+        }
+        const result = await service.getById(agentId);
+        response.status(result.status);
+        return response.json({ data: result.data, message: result.message });
     } catch (error){
         console.log(error);
         throw error;
@@ -90,8 +97,8 @@ async function getAllAgents(request, response) {
 module.exports = {
     // agentSignUp,
     // agentLogin,
-    // updateAgent,
-    // deleteAgent,
-    // findSelectedAgent,
+    findAgentBySpecialty,
+    findAgentByRegion,
+    findSelectedAgent,
     getAllAgents,    
 }

@@ -44,47 +44,47 @@ async function addData(){
     await Property.create({
       price: 500000,
       location: 'Sembawang',
-      noOfBedrooms: 4,
+      noOfBedrooms: 5,
       sizeInSqFt: 700,
       isSale: true,
     });
 
     await Property.create({
       price: 700000,
-      location: 'Canada',
-      noOfBedrooms: 6,
+      location: 'Toa Payoh',
+      noOfBedrooms: 4,
       sizeInSqFt: 1500,
-      isSale: true,
+      isRent: true,
     });
 
     await Property.create({
       price: 800000,
-      location: 'China',
-      noOfBedrooms: 15,
+      location: 'Ang Mo Kio',
+      noOfBedrooms: 5,
       sizeInSqFt: 1850,
-      isSale: true,
+      isRent: true,
     });
 
     await Property.create({
-      price: 1000000,
-      location: 'London',
-      noOfBedrooms: 9,
+      price: 400000,
+      location: 'Jurong',
+      noOfBedrooms: 5,
       sizeInSqFt: 950,
       isSale: true,
     });
 
     await Property.create({
-      price: 1200000,
-      location: 'Paris',
-      noOfBedrooms: 10,
-      sizeInSqFt: 15000,
+      price: 750000,
+      location: 'Bishan',
+      noOfBedrooms: 5,
+      sizeInSqFt: 1700,
       isSale: true,
     });
 
     await Property.create({
-      price: 8000,
-      location: 'Europe',
-      noOfBedrooms: 11,
+      price: 800000,
+      location: 'Bedok',
+      noOfBedrooms: 5,
       sizeInSqFt: 200,
       isRent: true,
     });
@@ -94,18 +94,32 @@ async function addData(){
       contactNo: 92223463,
       email: 'jerome.tan@property.com',
       pwd: await textToHash('agent1'),
+      specialty: 'Luxury',
+      region: 'North',
     });
     await Agent.create({
       fullName: 'Mary Tay',
       contactNo: 98642614,
       email: 'mary.tay@property.com',
       pwd: await textToHash('agent2'),
+      specialty: 'HDB',
+      region: 'West',
     });
     await Agent.create({
       fullName: 'Lee Su En',
       contactNo: 99420043,
       email: 'suen.lee@property.com',
       pwd: await textToHash('agent3'),
+      specialty: 'Condominium',
+      region: 'East',
+    });
+    await Agent.create({
+      fullName: 'Tan Wen Chang',
+      contactNo: 99420043,
+      email: 'wenchang.tan@property.com',
+      pwd: await textToHash('agent4'),
+      specialty: 'HDB',
+      region: 'East',
     });
 
   } catch(error){

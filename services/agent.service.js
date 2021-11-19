@@ -26,7 +26,7 @@ async function signup(email, password){
         console.log(error);
         throw error;
     }
-}
+};
 
 async function login(email, password){
     try {
@@ -50,55 +50,71 @@ async function login(email, password){
         console.log(error);
         throw error;
     }
-}
+};
 
-async function updateAccount(email){
-    try {
+async function findBySpecialty(searchParameter){
+    try{
         const result = {
             status: null,
             message: null,
             data: null
         }
-       
-        //Add business logic here (include jwt):
 
-
-
-
-
-
-
-
-        
-    } catch(error) {
+        if(searchParameter !== 'HDB'){
+            const specialty = searchParameter[0].toUpperCase()+searchParameter.slice(1);
+            const agent= await Agent.findAll({where: {specialty}});
+            if(!agent) {
+                result.status = 404;
+                result.message = `No agent found in charge of ${searchParameter}.`;
+                }
+    
+            result.status = 200;
+            result.message = `Agent(s) in charge of ${searchParameter}.`;         
+            result.data = agent;           
+            return result;
+        } else {
+            const specialty = searchParameter.toUpperCase();
+            const agent= await Agent.findAll({where: {specialty}});
+            if(!agent) {
+                result.status = 404;
+                result.message = `No agent found in charge of ${searchParameter}.`;
+                }
+    
+            result.status = 200;
+            result.message = `Agent(s) in charge of ${searchParameter}.`;         
+            result.data = agent;           
+            return result;
+        }
+    } catch(error){
         console.log(error);
         throw error;
     }
-}
+};
 
-async function removeAccount(email, password){
-    try {
+async function findByRegion(searchParameter){
+    try{
         const result = {
             status: null,
             message: null,
             data: null
         }
-       
-        //Add business logic here (include jwt):
+        const region = searchParameter[0].toUpperCase()+searchParameter.slice(1);
+        const agent= await Agent.findAll({where: {region}});
 
+        if(!agent) {
+            result.status = 404;
+            result.message = `No agent found for ${searchParameter} region.`;
+            }
 
-
-
-
-
-
-
-        
-    } catch(error) {
+        result.status = 200;
+        result.message = `Agent(s) in charge of ${searchParameter} region`;         
+        result.data = agent;           
+        return result;
+    } catch(error){
         console.log(error);
         throw error;
     }
-}
+};
 
 async function getById(id){
     try{
@@ -107,7 +123,7 @@ async function getById(id){
         console.log(error);
         throw error;
     }
-}
+};
 
 async function getAll(){
     try{
@@ -141,6 +157,8 @@ async function getAll(){
 module.exports = {
     signup,
     login,
+    findBySpecialty,
+    findByRegion,
     getById,
     getAll,
 };

@@ -31,6 +31,16 @@ module.exports = function(connection) {
           allowNull: false,
           field: "password",
         },
+        specialty: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          field: "specialty",
+        },
+        region: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          field: "region",
+        },
         createdAt: {
           type: DataTypes.DATE,
           field: "created_at",

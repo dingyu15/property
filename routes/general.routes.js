@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 
-const {agentSignUp, agentLogin, findSelectedAgent, getAllAgents} = require('../controllers/agent.controller');
+const {agentSignUp, agentLogin, findAgentByRegion, findAgentBySpecialty, findSelectedAgent, getAllAgents} = require('../controllers/agent.controller');
 // router.post('/agent/register', async (request,response) => await agentSignUp(request,response));
 // router.post('/agent/login', async (request,response) => await agentLogin(request,response));
-//     //Change the request.params variable name ':agentId' if required
-// router.get('/agent/:agentId', async (request, response) => await findSelectedAgent(request,response));
+router.get('/agent/specialty/:search', async (request, response) => await findAgentByRegion(request,response));
+router.get('/agent/region/:search', async (request, response) => await findAgentBySpecialty(request,response));
+router.get('/agent/:agentId', async (request, response) => await findSelectedAgent(request,response));
 router.get('/agent/all', async (request, response) => await getAllAgents(request,response));
 
 // const {customerSignUp, customerLogin} = require('../controllers/customer.controller');  

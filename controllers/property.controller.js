@@ -4,11 +4,11 @@ async function associateAgentWithProperty(request, response) {
     try{
         const propertyId = Number(request.params.propertyId);
         if(typeof request.body.agentId !== "number" || propertyId === NaN) {
-            response.status(400);
+            response.status(404);
             return response.json({message:"Incorrect request data"});
         }
-        response.status(result.status);
         const result = await service.associate(propertyId, request.body.agentId);
+        response.status(result.status);
         return response.json({ data: result.data, message: result.message });
     } catch(error){
         console.log(error);
@@ -23,8 +23,8 @@ async function removeAgentfromProperty(request, response) {
             response.status(400);
             return response.json({message:"Incorrect request data"});
         }
-        response.status(result.status);
         const result = await service.dissociate(Number(request.params.propertyId));
+        response.status(result.status);
         return response.json({ data: result.data, message: result.message });
     } catch(error){
         console.log(error);
@@ -53,9 +53,9 @@ async function handleUpdateProperty(request, response) {
             response.status(400);
             return response.json({message:"Incorrect request data"});
         };
-        response.status(result.status);
         const id = Number(request.params.propertyId);
         const result = await service.updateProperty(id, request.body.price, request.body.location, request.body.noOfBedrooms, request.body.sizeInSqFt, request.body.isSale, request.body.isRent);
+        response.status(result.status);
         return response.json({ data: result.data, message: result.message });
     } catch (error){
         console.log(error);
@@ -65,8 +65,8 @@ async function handleUpdateProperty(request, response) {
 
 async function handleDeleteProperty(request, response) {
     try{
-        response.status(result.status);
         const result = await service.removeProperty(Number(request.params.propertyId));
+        response.status(result.status);
         return response.json({message: result.message });
     } catch (error){
         console.log(error);
@@ -77,11 +77,8 @@ async function handleDeleteProperty(request, response) {
 // http://localhost:3000/general/properties/latest/6
 async function latest6Properties(request, response) {
     try{
-  
         const result = await service.getLatestProperties();
         return response.json(result);
-        
-
     } catch (error){
         console.log(error);
         throw error;
@@ -146,9 +143,9 @@ async function findSelectedProperty(request, response) {
         if(typeof propertyId === NaN) {
             response.status(400);
             return response.json({message:"Incorrect request data"});
-        }
-        response.status(result.status);
+        };
         const result = await service.getById(propertyId);
+        response.status(result.status);
         return response.json({ data: result.data, message: result.message });
     } catch (error){
         console.log(error);
