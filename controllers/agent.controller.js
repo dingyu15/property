@@ -34,7 +34,7 @@ async function agentLogin(request, response) {
 
 async function findAgentBySpecialty(request, response) {
     try{
-        if ((request.params.search) === 'luxury' || (request.params.search) === 'hdb' || (request.params.search) === 'condominium') {
+        if (request.params.search==='luxury' || request.params.search==='hdb' || request.params.search==='condominium') {
             const result = await service.findBySpecialty(request.params.search);    
             response.status(result.status);
             return response.json({ data: result.data, message: result.message }); 
@@ -83,9 +83,9 @@ async function findSelectedAgent(request, response) {
 
 async function getAllAgents(request, response) {
     try{
-        response.status(200);
         const result = await service.getAll();
-        return response.json(result);
+        response.status(result.status);        
+        return response.json({ data: result.data, message: result.message });
     } catch (error){
         console.log(error);
         throw error;

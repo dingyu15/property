@@ -298,7 +298,23 @@ async function searchPropertiesSale(isSale){
 
 async function getById(id){
     try{
-        return await Property.findByPk(id);
+        const result = {
+            status: null,
+            message: null,
+            data: null
+            };
+        const property = await Property.findByPk(id);
+                                
+        if(!property) {
+            result.status = 404;
+            result.message = `Property number ${id} is not found.`;
+            return result;
+        }
+
+        result.status = 200;
+        result.message = `Property ${id} details`;
+        result.data = property;
+        return result;
     } catch(error) {
         console.log(error);
         throw error;

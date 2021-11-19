@@ -155,9 +155,9 @@ async function findSelectedProperty(request, response) {
 
 async function getAllProperties(request, response) {
     try{
-        response.status(200);
         const result = await service.getAll();
-        return response.json(result);
+        response.status(result.status);
+        return response.json({ data: result.data, message: result.message });
     } catch (error){
         console.log(error);
         throw error;

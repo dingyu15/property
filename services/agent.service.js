@@ -60,28 +60,28 @@ async function findBySpecialty(searchParameter){
             data: null
         }
 
-        if(searchParameter !== 'HDB'){
+        if(searchParameter !== 'hdb'){
             const specialty = searchParameter[0].toUpperCase()+searchParameter.slice(1);
             const agent= await Agent.findAll({where: {specialty}});
             if(!agent) {
                 result.status = 404;
-                result.message = `No agent found in charge of ${searchParameter}.`;
+                result.message = `No agent found in charge of ${searchParameter} properties.`;
                 }
     
             result.status = 200;
-            result.message = `Agent(s) in charge of ${searchParameter}.`;         
+            result.message = `Agent(s) in charge of ${searchParameter} properties.`;         
             result.data = agent;           
             return result;
-        } else {
+        } else  {
             const specialty = searchParameter.toUpperCase();
             const agent= await Agent.findAll({where: {specialty}});
             if(!agent) {
                 result.status = 404;
-                result.message = `No agent found in charge of ${searchParameter}.`;
+                result.message = `No agent found in charge of ${specialty} properties.`;
                 }
-    
+
             result.status = 200;
-            result.message = `Agent(s) in charge of ${searchParameter}.`;         
+            result.message = `Agent(s) in charge of ${specialty} properties.`;         
             result.data = agent;           
             return result;
         }
@@ -118,7 +118,23 @@ async function findByRegion(searchParameter){
 
 async function getById(id){
     try{
-        return await Agent.findByPk(id);
+        const result = {
+            status: null,
+            message: null,
+            data: null
+            };
+        const agent = await Agent.findByPk(id);
+                                
+        if(!agent) {
+            result.status = 404;
+            result.message = `Agent number ${id} is not found.`;
+            return result;
+        }
+
+        result.status = 200;
+        result.message = `Agent ${id} details`;
+        result.data = agent;
+        return result;
     } catch(error) {
         console.log(error);
         throw error;

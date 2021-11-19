@@ -119,7 +119,7 @@ async function addData(){
       email: 'wenchang.tan@property.com',
       pwd: await textToHash('agent4'),
       specialty: 'HDB',
-      region: 'East',
+      region: 'South',
     });
 
   } catch(error){
